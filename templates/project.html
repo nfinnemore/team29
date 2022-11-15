@@ -9,11 +9,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <body>
-        <nav>
-            <a href="{{ url_for('index') }}"> Home</a> ||
-            <a href="{{ url_for('get_notes') }}"> Projects</a> ||
-            <a href="{{ url_for('new_note') }}">Add Note</a>
-        </nav>
+        
         <h1>Welcome {{user.name}} to the Project View</h1>
         <h1>Note detials</h1>
 
