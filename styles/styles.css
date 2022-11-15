@@ -1,0 +1,21 @@
+h1 {
+    text-align: center;
+    background-color: green;
+}
+
+h2 {
+    text-align: center;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(38, 38, 192);
+    color: black;
+}
