@@ -9,9 +9,9 @@ app = Flask(__name__)     # create an app
 # In this case it makes it so anyone going to "your-url/" makes this function
 # get called. What it returns is what is shown as the web page
 a_user = {'name' : 'Geoffrey', 'email' : 'gcloud@uncc.edu'}
-a_note = { 1: {'title' : 'My Project', 'text' : 'This is a description', 'date' : '11/15/22'},
-            2: {'title' : 'My Project2', 'text' : 'This is a description', 'date' : '11/16/22'},
-            3: {'title' : 'My Project3', 'text' : 'This is a description', 'date' : '11/17/22'} }
+projects = { 1: {'title' : 'My Project', 'text' : 'This is a description', 'deadline' : '11/15/22'},
+            2: {'title' : 'My Project2', 'text' : 'This is a description', 'deadline' : '11/16/22'},
+            3: {'title' : 'My Project3', 'text' : 'This is a description', 'deadline' : '11/17/22'} }
 
 # Home link
 @app.route('/')
@@ -23,16 +23,17 @@ def index():
 @app.route('/projects')
 def get_projects():
 
-    return render_template('projects.html', user=a_user, note=a_note)
+    return render_template('projects.html', user=a_user, projects=projects)
 
 # View single project link
-@app.route('/project')
-def get_project():
-   return render_template('project.html', user=a_user, note = a_note)
+@app.route('/projects/<project_id>')
+def get_project(project_id):
+
+   return render_template('project.html', user=a_user, project = projects[int(project_id)])
 
 @app.route('/new')
 def new_note():
-    return render_template('new.html', user=a_user, note=a_note)
+    return render_template('new.html', user=a_user, projects=projects)
     
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)

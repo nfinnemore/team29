@@ -19,15 +19,10 @@
                 <th>Title</th>
                 <th>Deadline</th>
             </tr>
-            {% for note in notes %}
+            {% for key, value in projects.items() %}
             <tr>
-                <td><a href="{{ url_for('get_projects', note_id=note.id) }}">{{ note.title }}</a></td>
-                <td>{{ note.date }}</td>
-                <td>
-                    <form action="{{ url_for('delete_note', note_id=note.id) }}" method="post">
-                        <input type="submit" value="Delete">
-                    </form>
-                </td>
+                <td>{{ value.title }}</td>
+                <td>{{ value.deadline }}</td>
             </tr>
             {% endfor %}
         </table>
