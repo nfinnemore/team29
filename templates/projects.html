@@ -21,7 +21,7 @@
             </tr>
             {% for key, value in projects.items() %}
             <tr>
-                <td>{{ value.title }}</td>
+                <td><a href="{{ url_for('get_project', project_id=key) }}">{{ value.title }}</a></td>
                 <td>{{ value.deadline }}</td>
             </tr>
             {% endfor %}

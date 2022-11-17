@@ -11,10 +11,9 @@
     <body>
         
         <h1>Welcome {{user.name}} to the Project Viewer</h1>
-
         <h2>Use this site to maintain and organize your notes.</h2>
 
-    
+        <nav> <a href={{ url_for('get_projects') }}> My Projects </a> </nav>
         <h3>Course notes</h3>
 
         <h3>To Do</h3>
