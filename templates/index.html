@@ -7,18 +7,22 @@
         <title>Team 29 Project View - View Project</title>
         <!-- styles -->
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <header>
+            <nav>
+                <a href="{{ url_for('index') }}"> Home</a> ||
+                <a href="{{ url_for('get_projects') }}"> Projects</a> ||
+                <a href="{{ url_for('new_project') }}">Add Projects</a>
+            </nav>
+        </header>
     </head>
     <body>
-        
-        <h1>Welcome {{user.name}} to the Project Viewer</h1>
+        <h2>Welcome {{user.name}} to the Project Viewer</h2>
         <h2>Use this site to maintain and organize your notes.</h2>
 
-        <nav> <a href={{ url_for('get_projects') }}> My Projects </a> </nav>
-        <h3>Course notes</h3>
-
-        <h3>To Do</h3>
-
-        <h3>Work notes</h3>
+        <p>
+            <nav> <a href={{ url_for('get_projects') }}>View Project List </a> </nav>
+        </p>
+        
 
     </body>
 </html>

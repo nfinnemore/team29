@@ -6,17 +6,16 @@
         <meta name="description" content="UNCC Notes App">
         <title>UNCC Notes App - New Note</title>
         <!-- styles -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <header>
+            <nav>
+                <a href="{{ url_for('index') }}"> Home</a> ||
+                <a href="{{ url_for('get_projects') }}"> Projects</a> ||
+                <a href="{{ url_for('new_project') }}">Add Projects</a>
+            </nav>
+        </header>
     </head>
     <body>
-       <nav>
-        <nav> 
-            <a href={{ url_for('index') }}> Home</a> ||
-            <a href={{ url_for('get_projects') }}> View All Projects</a>
-        </nav>
-
-       </nav>
-
         <h1>Add projects here {{user.name}}! </h1>
         <form action="new" method="post">
            <p><label>Title </label></p><p>  <input type="text" name="title"/></p>

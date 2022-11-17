@@ -1,9 +1,58 @@
-h1 {
-    text-align: center;
-    background-color: green;
-}
 
 h2 {
     text-align: center;
 }
 
+header nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(27, 122, 27);
+    color: goldenrod;
+    display: block;
+    padding: 12px 12px;
+    text-decoration: none;
+    font-size: larger;
+    text-align: left;
+}
+header a {
+    color: goldenrod;
+    text-decoration: none;
+}
+
+body {
+    margin: 3%;
+    background-color: rgb(198, 196, 196);
+    text-align: center;
+}
+table
+{
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid black;
+}
+
+th
+{
+    width: 200px;
+    background-color: rgb(27, 122, 27);
+}
+tr:nth-child(even) {
+    background-color: lightgray;
+}
+td {
+    width: 100px;
+    border: black;
+}
+p {
+    font-size: large;
+} 
+
+a {
+    font-size: large;
+}

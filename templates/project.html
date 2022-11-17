@@ -6,15 +6,17 @@
         <meta name="description" content="UNCC Notes App">
         <title>Team 29 Project View - View Project</title>
         <!-- styles -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <header>
+            <nav>
+                <a href="{{ url_for('index') }}"> Home</a> ||
+                <a href="{{ url_for('get_projects') }}"> Projects</a> ||
+                <a href="{{ url_for('new_project') }}">Add Projects</a>
+            </nav>
+        </header>
     </head>
     <body>
-        <nav> 
-            <a href={{ url_for('index') }}> Home</a> ||
-            <a href={{ url_for('get_projects') }}> View All Projects</a>
-        </nav>
-        <h1>Welcome {{user.name}} to the Project View</h1>
-        <h1>Note details</h1>
+        <h1>Project details</h1>
 
         <table>
             <tr>
