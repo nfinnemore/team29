@@ -2,6 +2,8 @@
 import os                 # os is used to get environment variables IP & PORT
 from flask import Flask   # Flask is the web app that we will customize
 from flask import render_template
+from flask import request
+from flask import redirect, url_for 
 
 app = Flask(__name__)     # create an app
 
@@ -31,9 +33,26 @@ def get_project(project_id):
 
    return render_template('project.html', user=a_user, project = projects[int(project_id)])
 
-@app.route('/new')
-def new_note():
-    return render_template('new.html', user=a_user, projects=projects)
+# Add new project link
+@app.route('/projects/new', methods=['GET', 'POST'])
+def new_project():
+    # Check method used for request
+    if request.method == 'POST':
+        # get title data
+        title = request.form['title']
+        # get project data
+        text = request.form['projectText']
+        # get deadline data
+        deadline = request.form['deadline']
+        # get the last ID used and increment by 1
+        id = len(projects)+1
+        #create new project entry
+        projects[id] = {'title' : title, 'text' : text, 'deadline' : deadline}
+        # ready to render response - redirect to projects view
+        return redirect(url_for('get_projects'))
+    else:
+        # Get request - show new note form
+        return render_template('new.html', user=a_user)
     
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
