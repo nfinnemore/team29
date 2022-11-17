@@ -9,10 +9,12 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
-        
+        <nav> 
+            <a href={{ url_for('index') }}> Home </a>
+        </nav>
         <h1>Welcome {{user.name}} to the Project Viewer</h1>
 
-        <h1>Project Lists</h1>
+        <h2>Project Lists</h2>
 
         <table>
             <tr>
