@@ -2,8 +2,25 @@
 import os                 # os is used to get environment variables IP & PORT
 from flask import Flask   # Flask is the web app that we will customize
 from flask import render_template
+from flask import request
+from flask import redirect, url_for
+from database import db
+from models import Project as Project
+from models import User as User
+#from forms import RegisterForm, LoginForm, CommentForm
+import bcrypt
+from flask import session
+#from forms import LoginForm
+#from models import Comment as Comment
 
 app = Flask(__name__)     # create an app
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+# bind sqlalchemy db object 
+db.init_app(app)
+# setup models
+with app.app_context():
+    db.create_all()
 
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
