@@ -25,9 +25,9 @@
                 <th>Deadline</th>
                 <th>Description</th>
             </tr>
-            {% for key, value in projects.items() %}
+            {% for value in projects %}
             <tr>
-                <td><a href="{{ url_for('get_project', project_id=key) }}">{{ value.title }}</a></td>
+                <td><a href="{{ url_for('get_project', project_id=value.id) }}">{{ value.title }}</a></td>
                 <td>{{ value.deadline }}</td>
                 <td>{{ value.text }}</td>
             </tr>

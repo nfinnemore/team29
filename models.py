@@ -7,7 +7,7 @@ class Project(db.Model):
     text = db.Column("text", db.String(100))
     deadline = db.Column("deadline", db.String(50))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    #comments = db.relationship("Comment", backref="note", cascade = "all, delete-orphan", lazy=True)
+    #comments = db.relationship("Comment", backref="project", cascade = "all, delete-orphan", lazy=True)
     
     def __init__(self, title, text, deadline, user_id):
         self.title = title
@@ -17,20 +17,23 @@ class Project(db.Model):
 
 class User(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
-    first_name = db.Column("first_name", db.String(30))
-    last_name = db.Column("last_name", db.String(30))
+    #first_name = db.Column("first_name", db.String(30))
+    #last_name = db.Column("last_name", db.String(30))
     email = db.Column("email", db.String(100))
-    password = db.Column(db.String(255), nullable=False)
-    registered_on = db.Column(db.DateTime, nullable=False)
-    notes = db.relationship("Note", backref="user", lazy=True)
+    name = db.Column("name", db.String(20))
+    #password = db.Column(db.String(255), nullable=False)
+    #registered_on = db.Column(db.DateTime, nullable=False)
+    #project = db.relationship("Project", backref="user", lazy=True)
     #comments = db.relationship("Comment", backref="user", lazy=True)
 
-    def __init__(self, first_name, last_name, email, password):
-        self.first_name = first_name
-        self.last_name = last_name
+    #def __init__(self, first_name, last_name, email, password):
+    def __init__(self, name, email):
+        #self.first_name = first_name
+        #self.last_name = last_name
+        self.name = name
         self.email = email
-        self.password = password
-        self.registered_on = datetime.date.today()
+        #self.password = password
+        #self.registered_on = datetime.date.today()
 
 #class Comment(db.Model):
     #id = db.Column(db.Integer, primary_key=True)
