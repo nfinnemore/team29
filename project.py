@@ -61,7 +61,46 @@ def new_project():
     else:
         a_user = db.session.query(User).filter_by(email='gcloud@uncc.edu').one()
         return render_template('new.html', user=a_user)
+
+# edit project
+@app.route('/projects/edit/<project_id>', methods=['GET', 'POST'])
+def update_project(project_id):
+    # check method used for request
+    if request.method == 'POST':
+        # get title data
+        title = request.form['title']
+        # get text data
+        text = request.form['projectText']
+        # get deadline data
+        deadline = request.form['deadline']
+        project = db.session.query(Project).filter_by(id=project_id).one()
+        # update project data
+        project.title = title
+        project.text = text
+        project.deadline = deadline
+        # update project in DB
+        db.session.add(project)
+        db.session.commit()
+
+        return redirect(url_for('get_projects'))
     
+    else:
+        # GET request - show new project form to edit note
+        # retrieve user from database
+        a_user = db.session.query(User).filter_by(email='gcloud@uncc.edu').one()
+        #retrieve note from database
+        my_project = db.session.query(Project).filter_by(id=project_id).one()
+
+        return render_template('new.html', project=my_project, user=a_user)
+
+@app.route('/projects/delete/<project_id>', methods=['POST'])
+def delete_project(project_id):
+    my_project = db.session.query(Project).filter_by(id=project_id).one()
+    db.session.delete(my_project)
+    db.session.commit()
+
+    return redirect(url_for('get_projects'))
+
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 

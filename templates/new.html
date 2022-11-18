@@ -17,11 +17,30 @@
     </head>
     <body>
         <h1>Add projects here {{user.name}}! </h1>
-        <form action="new" method="post">
-           <p><label>Title </label></p><p>  <input type="text" name="title"/></p>
+        {% if project %}
+            <form action="{{ url_for('update_project', project_id=project.id) }}" method="post">
+        {% else %}
+            <form action="new" method="post">
+        {% endif %}
+           <p><label>Title </label></p><p>  <input type="text" name="title" value="{% if project %}{{project.title}} {% endif %}"/></p>
            <p><label>Deadline (mm/dd/yyyy)</label></p><p>  <input type="text" name="deadline"/></p>
-            <p><label>Project </label></p><p><textarea name="projectText"  rows="6" cols="0" >Add your new project description here ...</textarea></p>
-            <p><input type="submit" value="Add Project"/></p>
+            <p><label>Project </label></p>
+            <p>
+                <textarea name="projectText"  rows="6" cols="0" >
+                    {% if project %}
+                        {{project.text}}
+                    {% else %}
+                        Add your new project description here ...
+                    {% endif %}
+                </textarea>
+            </p>
+            <p>
+                {% if project %}
+                    <input type="submit" value="Update Project"/></p>
+                {% else %}
+                    <input type="submit" value="Add Project"/></p>
+                {% endif %}
+            </p>
         </form>
     </body>
 </html>
