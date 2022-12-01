@@ -24,7 +24,9 @@ class RegisterForm(FlaskForm):
         EqualTo('confirmPassword', message='Passwords must match')
     ])
 
-    confirmPassword = PasswordField('Confirm Password', validators=[
+    confirmPassword = PasswordField('Confirm Password',
+        DataRequired(message='Please include a non-alphanumeric character'),
+        validators=[
         Length(min=6, max=10), re.search('\W', password)
     ])
     
