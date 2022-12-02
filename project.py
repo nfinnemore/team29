@@ -10,6 +10,9 @@ from models import User as User
 from forms import RegisterForm
 from flask import session
 import bcrypt
+from forms import LoginForm
+from models import Comment as Comment
+from forms import RegisterForm, LoginForm, CommentForm
 
 app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
