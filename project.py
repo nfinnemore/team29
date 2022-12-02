@@ -7,10 +7,14 @@ from flask import redirect, url_for
 from database import db
 from models import Project as Project
 from models import User as User
+from forms import RegisterForm
+from flask import session
+import bcrypt
 
 app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+app.config['SECRET_KEY'] = 'SE3155'
 
 db.init_app(app)
 # Setup models
@@ -30,9 +34,15 @@ def index():
 # View all projects link
 @app.route('/projects')
 def get_projects():
-    a_user = db.session.query(User).filter_by(email='gcloud@uncc.edu').one()
-    projects = db.session.query(Project).all()
-    return render_template('projects.html', projects = projects, user=a_user)
+    # retreive user from data base
+    # check if a user is saved in session
+    if(session.get('user')):
+        # retrieve projects from database
+        projects = db.session.query(Project).filter_by(user_id=session['user_id'].all)
+        
+        return render_template('projects.html', projects = projects, user=session['user'])
+    else:
+        return render_template(url_for('login'))
 
 # View single project link
 @app.route('/projects/<project_id>')
@@ -100,6 +110,31 @@ def delete_project(project_id):
     db.session.commit()
 
     return redirect(url_for('get_projects'))
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    form = RegisterForm()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        # salt and hash password
+        h_password = bcrypt.hashpw(
+            request.form['password'].encode('utf-8'), bcrypt.gensalt())
+        # get entered user data
+        first_name = request.form['firstname']
+        last_name = request.form['lastname']
+        # create user model
+        new_user = User(first_name, last_name, request.form['email'], h_password)
+        # add user to database and commit
+        db.session.add(new_user)
+        db.session.commit()
+        # save the user's name to the session
+        session['user'] = first_name
+        session['user_id'] = new_user.id  # access id value from user model of this newly added user
+        # show user dashboard view
+        return redirect(url_for('get_notes'))
+
+    # something went wrong - display register view
+    return render_template('register.html', form=form)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
