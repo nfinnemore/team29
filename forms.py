@@ -4,7 +4,7 @@ from wtforms.validators import Length, DataRequired, EqualTo, Email
 from wtforms import ValidationError
 from models import User
 from database import db
-import re
+
 
 
 class RegisterForm(FlaskForm):
@@ -24,9 +24,7 @@ class RegisterForm(FlaskForm):
         EqualTo('confirmPassword', message='Passwords must match')
     ])
 
-    confirmPassword = PasswordField('Confirm Password',
-        DataRequired(message='Please include a non-alphanumeric character'),
-        validators=[
+    confirmPassword = PasswordField('Confirm Password', validators=[
         Length(min=6, max=10)
     ])
     
