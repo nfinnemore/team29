@@ -6,7 +6,6 @@ from models import User
 from database import db
 
 
-
 class RegisterForm(FlaskForm):
     class Meta:
         csrf = False

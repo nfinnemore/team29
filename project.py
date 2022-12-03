@@ -54,7 +54,7 @@ def get_project(project_id):
     if session.get('user'):
         project = db.session.query(Project).filter_by(id=project_id, user_id=session['user_id']).one()
         form=CommentForm()
-        return render_template('note.html', project=project, user=session['user_id'], form=form)
+        return render_template('project.html', project=project, user=session['user_id'], form=form)
     else:
         return redirect(url_for('login'))
 
