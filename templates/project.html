@@ -11,12 +11,12 @@
             <nav>
                 <a href="{{ url_for('index') }}"> Home</a> ||
                 <a href="{{ url_for('get_projects') }}"> Projects</a> ||
-                <a href="{{ url_for('new_project') }}">Add Projects</a> ||
                 <a href="{{ url_for('logout') }}">Logout</a>
             </nav>
         </header>
     </head>
     <body>
+        <br>
         <h1>Project details</h1>
 
         <table>
@@ -30,25 +30,32 @@
                 <td>{{ project.text }}</td>
                 <td>{{ project.deadline }}</td>
             </tr>
+        </table>
+        <br><br>
+        <table>
             {% if project.comments %}
                 {% if project.comments|length > 0 %}
-                    <h2>Comments</h2>
-                    <ul>
-                {% for comment in project.comments %}
-                    <li>{{ comment.content }}</li>
-                {% endfor %}
-                </ul>
+                    <tr>
+                        <th><h2>Comments</h2></th>
+                    </tr>
+                    {% for comment in project.comments %}
+                    <tr>
+                        <td>{{ comment.content }}</td>
+                    </tr>
+                    {% endfor %}
                 {% endif %}
             {% endif %}
-            <form action="{{ url_for('new_comment', project_id=project.id) }}" method="post">
-                <div class="formwrapper">
-                <h2 class="title">Add a comment</h2>
-                <div class="form-field">
-                {{ form.comment.label }} <br/> {{ form.comment }}
-                </div>
-                {{ form.submit }}
-                </div>
-            </form>
         </table>
+        <br>
+        <form action="{{ url_for('new_comment', project_id=project.id) }}" method="post">
+            <div class="formwrapper">
+                <div class="form-field">
+                    <h3>{{ form.comment.label }}</h3>
+                    {{ form.comment }}
+                </div>
+                <br>
+                {{ form.submit }}
+            </div>
+        </form>
     </body>
 </html>

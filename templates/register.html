@@ -7,26 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
     <header>
         <nav>
-            <a href="{{ url_for('index') }}"> Home</a> ||
-            <a href="{{ url_for('get_projects') }}"> Projects</a> ||
-            <a href="{{ url_for('new_project') }}">Add Projects</a>
+           <a href="{{ url_for('index') }}"> Home</a> ||
+            <a href="{{ url_for('login') }}">Login</a>
         </nav>
-        {% if user %}
-            <nav>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            </nav>
-        {% else %}
-            <nav>
-                <a href="{{ url_for('login') }}">Sign In</a> ||
-                <a href="{{ url_for('register') }}">Register</a> ||
-            </nav>
-        {% endif %}
     </header>
 </head>
     <body>
-        <h1>Welcome {% if user %}{{user}}{% endif %} to the Project Viewer</h1>
+        <br>
+        <h1>Welcome {% if user %}{{user}}{% endif %} to the Project Viewer!</h1>
 
-        <h2>Use this site to maintain and organize your notes.</h2>
+        <h2>Use this site to maintain and organize your projects</h2>
         <div class="formwrapper">
             <h2 class="title">Register</h2>
             <form method="POST" action="/register">

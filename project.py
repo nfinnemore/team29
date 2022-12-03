@@ -46,7 +46,7 @@ def get_projects():
         
         return render_template('projects.html', projects = projects, user=session['user'])
     else:
-        return render_template(url_for('login'))
+        return redirect(url_for('login'))
 
 # View single project link
 @app.route('/projects/<project_id>')
@@ -136,7 +136,7 @@ def register():
         session['user'] = first_name
         session['user_id'] = new_user.id  # access id value from user model of this newly added user
         # show user dashboard view
-        return redirect(url_for('get_projects'))
+        return redirect(url_for('index'))
 
     # something went wrong - display register view
     return render_template('register.html', form=form)
@@ -154,7 +154,7 @@ def login():
             session['user'] = the_user.first_name
             session['user_id'] = the_user.id
             # render view
-            return redirect(url_for('get_projects'))
+            return redirect(url_for('index'))
 
         # password check failed
         # set error message to alert user

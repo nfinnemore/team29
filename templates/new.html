@@ -11,13 +11,13 @@
             <nav>
                 <a href="{{ url_for('index') }}"> Home</a> ||
                 <a href="{{ url_for('get_projects') }}"> Projects</a> ||
-                <a href="{{ url_for('new_project') }}">Add Projects</a> || 
                 <a href="{{ url_for('logout') }}">Logout</a>
             </nav>
         </header>
     </head>
     <body>
-        <h1>Add projects here {{user}}! </h1>
+        <br>
+        <h1>New project </h1>
         {% if project %}
             <form action="{{ url_for('update_project', project_id=project.id) }}" method="post">
         {% else %}

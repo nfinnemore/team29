@@ -11,35 +11,48 @@
             <nav>
                 <a href="{{ url_for('index') }}"> Home</a> ||
                 <a href="{{ url_for('get_projects') }}"> Projects</a> ||
-                <a href="{{ url_for('new_project') }}">Add Projects</a> ||
                 <a href="{{ url_for('logout') }}">Logout</a>
             </nav>
 
         </header>
     </head>
     <body>
-        <h2>Project Lists</h2>
-        <p>Click a project title to view a project</p>
+        <br>
+        <h1>Projects List</h1>
+        <h2>Click a project title to view a project</h2>
 
         <table>
             <tr>
                 <th>Title</th>
                 <th>Deadline</th>
                 <th>Description</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
             {% for value in projects %}
             <tr>
                 <td><a href="{{ url_for('get_project', project_id=value.id) }}">{{ value.title }}</a></td>
                 <td>{{ value.deadline }}</td>
                 <td>{{ value.text }}</td>
-                <td><a href="{{ url_for('update_project', project_id=value.id) }}">Edit</a></td>
+                <td>
+                    <form action="{{ url_for('update_project', project_id=value.id) }}">
+                        <input type="submit" value="Edit">
+                    </form>
+                </td>
                 <td>
                     <form action="{{ url_for('delete_project', project_id=value.id) }}" method="post">
                         <input type="submit" value="Delete">
                     </form>
                 </td>
+
             </tr>
             {% endfor %}
         </table>
+        <br>
+        <td>
+            <form action="{{ url_for('new_project') }}">
+                <input type="submit" value="Add">
+            </form>
+        </td>
     </body>
 </html>

@@ -4,31 +4,43 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="UNCC Notes App">
+
         <title>Team 29 Project View - View Project</title>
+
         <!-- styles -->
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
         <header>
             <nav>
+                {% if user %}
                 <a href="{{ url_for('index') }}"> Home</a> ||
                 <a href="{{ url_for('get_projects') }}"> Projects</a> ||
-                <a href="{{ url_for('new_project') }}">Add Projects</a>
-                {% if user %}
                 <a href="{{ url_for('logout') }}">Logout</a>
                 {% else %}
-                <a href="{{ url_for('login') }}">Sign In</a> ||
-                <a href="{{ url_for('register') }}">Register</a> ||
+                <a href="{{ url_for('index') }}"> Home</a> ||
+                <a href="{{ url_for('login') }}">Login</a> ||
+                <a href="{{ url_for('register') }}">Register</a>
                 {% endif %}
             </nav>
         </header>
     </head>
+
     <body>
-        <h2>Welcome {{user}} to the Project Viewer</h2>
-        <h2>Use this site to maintain and organize your notes.</h2>
-
-        <p>
-            <nav> <a href={{ url_for('get_projects') }}>View Project List </a> </nav>
-        </p>
-        
-
+        <br>
+        <h1>Welcome {{user}} to the Project Viewer!</h1>
+        <h2>Use this site to maintain and organize your projects</h2>
+        {% if user %}
+        <td>
+            <form action="{{ url_for('get_projects') }}">
+                <input type="submit" value="View Project List">
+            </form>
+        </td>
+        <br>
+        <td>
+            <form action="{{ url_for('new_project') }}">
+                <input type="submit" value="Create New Project">
+            </form>
+        </td>
+        {% endif %}
     </body>
 </html>
