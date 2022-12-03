@@ -42,7 +42,7 @@ def get_projects():
     # check if a user is saved in session
     if(session.get('user')):
         # retrieve projects from database
-        projects = db.session.query(Project).filter_by(user_id=session['user_id'].all)
+        projects = db.session.query(Project).filter_by(user_id=session['user_id']).all()
         
         return render_template('projects.html', projects = projects, user=session['user'])
     else:
