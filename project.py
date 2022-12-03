@@ -136,7 +136,7 @@ def register():
         session['user'] = first_name
         session['user_id'] = new_user.id  # access id value from user model of this newly added user
         # show user dashboard view
-        return redirect(url_for('get_notes'))
+        return redirect(url_for('get_projects'))
 
     # something went wrong - display register view
     return render_template('register.html', form=form)
@@ -154,7 +154,7 @@ def login():
             session['user'] = the_user.first_name
             session['user_id'] = the_user.id
             # render view
-            return redirect(url_for('get_notes'))
+            return redirect(url_for('get_projects'))
 
         # password check failed
         # set error message to alert user
