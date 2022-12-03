@@ -9,18 +9,14 @@
         <nav>
             <a href="{{ url_for('index') }}"> Home</a> ||
             <a href="{{ url_for('get_projects') }}"> Projects</a> ||
-            <a href="{{ url_for('new_project') }}">Add Projects</a>
-        </nav>
+            <a href="{{ url_for('new_project') }}">Add Projects</a> ||
         {% if user %}
-            <nav>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            </nav>
+                <a href="{{ url_for('logout') }}">Logout</a> ||
         {% else %}
-            <nav>
                 <a href="{{ url_for('login') }}">Sign In</a> ||
                 <a href="{{ url_for('register') }}">Register</a> ||
-            </nav>
         {% endif %}
+        </nav>
     </header>
 </head>
     <body>
