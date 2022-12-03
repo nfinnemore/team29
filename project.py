@@ -31,8 +31,9 @@ with app.app_context():
 @app.route('/')
 @app.route('/index')
 def index():
-    a_user = db.session.query(User).filter_by(email='gcloud@uncc.edu').one()
-    return render_template('index.html', user = a_user)
+    if session.get('user'):
+        return render_template('index.html', user = session['user'])
+    return render_template("index.html")
 
 # View all projects link
 @app.route('/projects')
@@ -50,69 +51,70 @@ def get_projects():
 # View single project link
 @app.route('/projects/<project_id>')
 def get_project(project_id):
-    a_user = db.session.query(User).filter_by(email='gcloud@uncc.edu').one()
-    project = db.session.query(Project).filter_by(id=project_id)
-    return render_template('project.html', user=a_user, project = project[int(0)])
+    if session.get('user'):
+        project = db.session.query(Project).filter_by(id=project_id, user_id=session['user_id']).one()
+        form=CommentForm()
+        return render_template('note.html', project=project, user=session['user_id'], form=form)
+    else:
+        return redirect(url_for('login'))
 
 # Add new project link
 @app.route('/projects/new', methods=['GET', 'POST'])
 def new_project():
     # Check method used for request
-    if request.method =='POST':
-        a_user = db.session.query(User).filter_by(email='gcloud@uncc.edu').one()
-        title = request.form['title']
-        text = request.form['projectText']
-        deadline = request.form['deadline']
-        from datetime import date
-        today = date.today()
-            
-        today = today.strftime("%m-%d-%Y")
-        new_record = Project(title, text, deadline, a_user.id)
-        db.session.add(new_record)
-        db.session.commit()
-        return redirect(url_for('get_project', project_id=new_record.id))
+    if session.get('user'):
+        if request.method =='POST':
+            title = request.form['title']
+            text = request.form['projectText']
+            deadline = request.form['deadline']
+            from datetime import date
+            today = date.today()
+            today = today.strftime("%m-%d-%Y")
+            new_record = Project(title, text, deadline, session['user_id'])
+            db.session.add(new_record)
+            db.session.commit()
+            return redirect(url_for('get_project', project_id=new_record.id))
+        else:
+            return render_template('new.html', user=session['user'])
     else:
-        a_user = db.session.query(User).filter_by(email='gcloud@uncc.edu').one()
-        return render_template('new.html', user=a_user)
+        return redirect(url_for('login'))
 
 # edit project
 @app.route('/projects/edit/<project_id>', methods=['GET', 'POST'])
 def update_project(project_id):
+    if session.get('user'):
     # check method used for request
-    if request.method == 'POST':
-        # get title data
-        title = request.form['title']
+        if request.method == 'POST':
+            # get title data
+            title = request.form['title']
         # get text data
-        text = request.form['projectText']
+            text = request.form['projectText']
         # get deadline data
-        deadline = request.form['deadline']
-        project = db.session.query(Project).filter_by(id=project_id).one()
+            deadline = request.form['deadline']
+            project = db.session.query(Project).filter_by(id=project_id).one()
         # update project data
-        project.title = title
-        project.text = text
-        project.deadline = deadline
+            project.title = title
+            project.text = text
+            project.deadline = deadline
         # update project in DB
-        db.session.add(project)
-        db.session.commit()
-
-        return redirect(url_for('get_projects'))
-    
+            db.session.add(project)
+            db.session.commit()
+            return redirect(url_for('get_projects'))
+        else:
+            project = db.session.query(Project).filter_by(id=project_id).one()
+            return render_template('new.html', project=project, user=session['user'])
     else:
-        # GET request - show new project form to edit note
-        # retrieve user from database
-        a_user = db.session.query(User).filter_by(email='gcloud@uncc.edu').one()
-        #retrieve note from database
-        my_project = db.session.query(Project).filter_by(id=project_id).one()
-
-        return render_template('new.html', project=my_project, user=a_user)
+        return redirect(url_for('login'))
 
 @app.route('/projects/delete/<project_id>', methods=['POST'])
 def delete_project(project_id):
-    my_project = db.session.query(Project).filter_by(id=project_id).one()
-    db.session.delete(my_project)
-    db.session.commit()
-
-    return redirect(url_for('get_projects'))
+    if session.get('user'):
+        my_project = db.session.query(Project).filter_by(id=project_id).one()
+        db.session.delete(my_project)
+        db.session.commit()
+        return redirect(url_for('get_projects'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -139,6 +141,53 @@ def register():
     # something went wrong - display register view
     return render_template('register.html', form=form)
 
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    login_form = LoginForm()
+    # validate_on_submit only validates using POST
+    if login_form.validate_on_submit():
+        # we know user exists. We can use one()
+        the_user = db.session.query(User).filter_by(email=request.form['email']).one()
+        # user exists check password entered matches stored password
+        if bcrypt.checkpw(request.form['password'].encode('utf-8'), the_user.password):
+            # password match add user info to session
+            session['user'] = the_user.first_name
+            session['user_id'] = the_user.id
+            # render view
+            return redirect(url_for('get_notes'))
+
+        # password check failed
+        # set error message to alert user
+        login_form.password.errors = ["Incorrect username or password."]
+        return render_template("login.html", form=login_form)
+    else:
+        # form did not validate or GET request
+        return render_template("login.html", form=login_form)
+
+@app.route('/logout')
+def logout():
+    # check if a user is saved in session
+    if session.get('user'):
+        session.clear()
+
+    return redirect(url_for('index'))
+
+@app.route('/projects/<project_id>/comment', methods=['POST'])
+def new_comment(project_id):
+    if session.get('user'):
+        comment_form = CommentForm()
+        # validate_on_submit only validates using POST
+        if comment_form.validate_on_submit():
+            # get comment data
+            comment_text = request.form['comment']
+            new_record = Comment(comment_text, int(project_id), session['user_id'])
+            db.session.add(new_record)
+            db.session.commit()
+
+        return redirect(url_for('get_project', project_id=project_id))
+
+    else:
+        return redirect(url_for('login'))
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
