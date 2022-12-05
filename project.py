@@ -202,6 +202,16 @@ def all_projects():
     else:
         return redirect(url_for('login'))
 
+# New Feature: view projects
+# View someone else's project link
+@app.route('/all_projects/<project_id>')
+def view_project(project_id):
+    if session.get('user'):
+        project = db.session.query(Project).filter_by(id=project_id).one()
+        return render_template('view_project.html', project=project, user=session['user_id'])
+    else:
+        return redirect(url_for('login'))
+
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
 # To see the web page in your web browser, go to the url,
