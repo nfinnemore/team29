@@ -19,41 +19,24 @@
     </head>
     <body>
         <br>
-        <h1>My Projects</h1>
-        <h2>Click a project title to view a project</h2>
+        <h1>All Projects</h1>
 
         <table>
             <tr>
                 <th>Title</th>
                 <th>Deadline</th>
                 <th>Description</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Author</th>
             </tr>
             {% for value in projects %}
             <tr>
-                <td><a href="{{ url_for('get_project', project_id=value.id) }}">{{ value.title }}</a></td>
+                <td>{{ value.title }}</td>
                 <td>{{ value.deadline }}</td>
                 <td>{{ value.text }}</td>
-                <td>
-                    <form action="{{ url_for('update_project', project_id=value.id) }}">
-                        <input type="submit" value="Edit">
-                    </form>
-                </td>
-                <td>
-                    <form action="{{ url_for('delete_project', project_id=value.id) }}" method="post">
-                        <input type="submit" value="Delete">
-                    </form>
-                </td>
-
+                <td>{{ value.user.email }}</td>
             </tr>
             {% endfor %}
         </table>
-        <br>
-        <td>
-            <form action="{{ url_for('new_project') }}">
-                <input type="submit" value="Add">
-            </form>
-        </td>
+
     </body>
 </html>

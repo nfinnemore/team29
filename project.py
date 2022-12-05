@@ -35,7 +35,7 @@ def index():
         return render_template('index.html', user = session['user'])
     return render_template("index.html")
 
-# View all projects link
+# View your projects link
 @app.route('/projects')
 def get_projects():
     # retreive user from data base
@@ -186,6 +186,19 @@ def new_comment(project_id):
 
         return redirect(url_for('get_project', project_id=project_id))
 
+    else:
+        return redirect(url_for('login'))
+
+# New Feature: all projects
+# View all projects link
+@app.route('/all_projects')
+def all_projects():
+    # if user is logged in, they can see all projects
+    if(session.get('user')):
+        # retrieve all projects from database
+        projects = db.session.query(Project).all()
+        
+        return render_template('all_projects.html', projects = projects, user=session['user'])
     else:
         return redirect(url_for('login'))
 

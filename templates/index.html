@@ -14,6 +14,7 @@
             <nav>
                 {% if user %}
                 <a href="{{ url_for('index') }}"> Home</a> ||
+                <a href="{{ url_for('all_projects') }}">All Projects</a> ||
                 <a href="{{ url_for('get_projects') }}"> Projects</a> ||
                 <a href="{{ url_for('logout') }}">Logout</a>
                 {% else %}
@@ -31,14 +32,32 @@
         <h2>Use this site to maintain and organize your projects</h2>
         {% if user %}
         <td>
+            <form action="{{ url_for('all_projects') }}">
+                <input type="submit" value="All Projects">
+            </form>
+        </td>
+        <br>
+        <td>
             <form action="{{ url_for('get_projects') }}">
-                <input type="submit" value="View Project List">
+                <input type="submit" value="My Projects">
             </form>
         </td>
         <br>
         <td>
             <form action="{{ url_for('new_project') }}">
                 <input type="submit" value="Create New Project">
+            </form>
+        </td>
+        {% else %}
+        <td>
+            <form action="{{ url_for('login') }}">
+                <input type="submit" value="Login">
+            </form>
+        </td>
+        <br>
+        <td>
+            <form action="{{ url_for('register') }}">
+                <input type="submit" value="Register">
             </form>
         </td>
         {% endif %}
