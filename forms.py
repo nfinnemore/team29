@@ -4,7 +4,6 @@ from wtforms.validators import Length, DataRequired, EqualTo, Email
 from wtforms import ValidationError
 from models import User
 from database import db
-import re
 
 
 class RegisterForm(FlaskForm):
@@ -25,7 +24,7 @@ class RegisterForm(FlaskForm):
     ])
 
     confirmPassword = PasswordField('Confirm Password', validators=[
-        Length(min=6, max=10), re.search()
+        Length(min=6, max=10)
     ])
     
     submit = SubmitField('Submit')
@@ -58,3 +57,8 @@ class CommentForm(FlaskForm):
     comment = TextAreaField('Add a Comment',validators=[Length(min=1)])
 
     submit = SubmitField('Add Comment')
+
+class ChangePassword(FlaskForm):
+    password = PasswordField('New Password', [
+        DataRequired(message="Please enter a new password"), EqualTo('confirmPassword', message='Passwords must match')])
+    confirmPassword  = PasswordField('Confirm Password')
