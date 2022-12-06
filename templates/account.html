@@ -34,14 +34,25 @@
             <td>
                 Account Name - {{user}}
             </td>
+            <td>
+                Account Email - {{user.email}}
+            </td>
+            <td>
+                <!-- UPDATE WHEN READY-->
+                <form action="{{ url_for('changepassword') }}"> 
+                    <input type="submit" value="Change Password">
+                </form>
+            </td>
+            <td>
+                <!-- UPDATE WHEN READY-->
+                <form action="{{ url_for('delete_account') }}"> 
+                    <input type="submit" value="Delete Account">
+                </form>
+            </td>
         </table>
         
         <br>
-        <td>
-            <form action="{{ url_for('get_projects') }}">
-                <input type="submit" value="My Projects">
-            </form>
-        </td>
+        
         <br>
         <td>
             <form action="{{ url_for('new_project') }}">
