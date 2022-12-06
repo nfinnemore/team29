@@ -212,6 +212,14 @@ def view_project(project_id):
     else:
         return redirect(url_for('login'))
 
+@app.route('/account')
+def view_account():
+    if session.get('user'):
+        projects = db.session.query(Project).filter_by(user_id=session['user_id']).all()
+        return render_template('account.html', project=projects, user=session['user'])
+    else:
+        return redirect(url_for('login'))
+
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
 # To see the web page in your web browser, go to the url,
