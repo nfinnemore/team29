@@ -12,7 +12,7 @@ from flask import session
 import bcrypt
 from forms import LoginForm
 from models import Comment as Comment
-from forms import RegisterForm, LoginForm, CommentForm
+from forms import RegisterForm, LoginForm, CommentForm, ChangePassword
 
 app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
@@ -212,11 +212,32 @@ def view_project(project_id):
     else:
         return redirect(url_for('login'))
 
-@app.route('/account')
+@app.route('/account', methods= ['GET', 'POST'])
 def view_account():
+   
     if session.get('user'):
         projects = db.session.query(Project).filter_by(user_id=session['user_id']).all()
         return render_template('account.html', project=projects, user=session['user'])
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/changepassword')
+def changepassword():
+    form = ChangePassword()
+    if request.method == 'POST':
+        password = form.password
+        db.session.add(password)
+        return redirect(url_for('login'))
+    else:
+        return render_template('account.html')
+
+@app.route('/account/delete', methods=['POST'])
+def delete_account(user_id):
+    if session.get('user'):
+        my_user = db.session.query(User).filter_by(id=user_id).one()
+        db.session.delete(my_user)
+        db.session.commit()
+        return render_template('index.html')
     else:
         return redirect(url_for('login'))
 
