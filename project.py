@@ -235,7 +235,7 @@ def changepassword():
     else:
         return render_template('account.html')
 
-@app.route('/account/delete', methods=['POST'])
+@app.route('/delete', methods=['POST'])
 def delete_account(user_id):
     if session.get('user'):
         my_user = db.session.query(User).filter_by(id=user_id).one()

@@ -20,7 +20,6 @@
     <body>
         <br>
         <h1>Manage Account</h1>
-        {% if user %}
         <table>
             <tr>
                 <td>
@@ -35,11 +34,5 @@
                 </td>                    
             </tr>
         </table>
-        {% else %}
-        <td>
-            <form action="{{ url_for('login') }}">
-                <input type="submit" value="Login">
-            </form>
-        {% endif %}
     </body>
 </html>
