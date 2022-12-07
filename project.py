@@ -224,10 +224,14 @@ def view_account():
 @app.route('/changepassword')
 def changepassword():
     form = ChangePassword()
-    if request.method == 'POST':
-        password = form.password
-        db.session.add(password)
-        return redirect(url_for('login'))
+    if session.get('user'):
+        if request.method == 'POST' and form.validate_on_submit():
+            password = bcrypt.hashpw(
+            request.form['password'].encode('utf-8'), bcrypt.gensalt())
+            db.session.add(password)
+            return redirect(url_for('login'))
+        else:
+            return render_template('account.html')
     else:
         return render_template('account.html')
 

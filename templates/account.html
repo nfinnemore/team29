@@ -50,15 +50,6 @@
                 </form>
             </td>
         </table>
-        
-        <br>
-        
-        <br>
-        <td>
-            <form action="{{ url_for('new_project') }}">
-                <input type="submit" value="Create New Project">
-            </form>
-        </td>
         {% else %}
         <td>
             <form action="{{ url_for('login') }}">
