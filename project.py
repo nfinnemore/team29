@@ -212,12 +212,12 @@ def view_project(project_id):
     else:
         return redirect(url_for('login'))
 
-@app.route('/account', methods= ['GET', 'POST'])
+@app.route('/account/')
 def view_account():
-   
-    if session.get('user'):
-        projects = db.session.query(Project).filter_by(user_id=session['user_id']).all()
-        return render_template('account.html', project=projects, user=session['user'])
+
+    if(session.get('user')):
+        
+        return render_template('account.html')
     else:
         return redirect(url_for('login'))
 
