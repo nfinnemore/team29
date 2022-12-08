@@ -212,7 +212,7 @@ def view_project(project_id):
     else:
         return redirect(url_for('login'))
 
-@app.route('/account/')
+@app.route('/account')
 def view_account():
 
     if(session.get('user')):
@@ -229,9 +229,10 @@ def changepassword():
             password = bcrypt.hashpw(
             request.form['password'].encode('utf-8'), bcrypt.gensalt())
             db.session.add(password)
+            db.session.commit()
             return redirect(url_for('login'))
         else:
-            return render_template('changepassword.html', form=form)
+            return render_template('changepassword.html', form=form, user=session['user'])
     else:
         return render_template('account.html')
 
