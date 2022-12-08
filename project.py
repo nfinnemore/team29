@@ -231,7 +231,7 @@ def changepassword():
             db.session.add(password)
             return redirect(url_for('login'))
         else:
-            return render_template('account.html')
+            return render_template('changepassword.html', form=form)
     else:
         return render_template('account.html')
 
