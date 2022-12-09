@@ -206,12 +206,14 @@ def all_projects():
 # View someone else's project link
 @app.route('/all_projects/<project_id>')
 def view_project(project_id):
+
     if session.get('user'):
         project = db.session.query(Project).filter_by(id=project_id).one()
         return render_template('view_project.html', project=project, user=session['user_id'])
     else:
         return redirect(url_for('login'))
-
+        
+# New Feature: Manage account (either change password or delete account)
 @app.route('/account')
 def view_account():
 
@@ -221,7 +223,7 @@ def view_account():
     else:
         return redirect(url_for('login'))
 
-@app.route('/changepassword')
+@app.route('/changepassword', methods=['GET', 'POST'])
 def changepassword():
     form = ChangePassword()
     if session.get('user'):
@@ -245,6 +247,20 @@ def delete_account(user_id):
         return render_template('index.html')
     else:
         return redirect(url_for('login'))
+
+# New Feature: See all the users in a table to get reference on name, contact email
+@app.route('/all_users')
+def all_users():
+    # retreive user from data base
+    # check if a user is saved in session
+    if session.get('user'):
+        users = db.session.query(User).all()
+        
+        return render_template('all_users.html', users = users, user=session['user'])
+    else:
+        return redirect(url_for('login'))
+
+
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
