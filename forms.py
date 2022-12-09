@@ -59,10 +59,3 @@ class CommentForm(FlaskForm):
     comment = TextAreaField('Add a Comment',validators=[Length(min=1)])
 
     submit = SubmitField('Add Comment')
-
-class ChangePassword(FlaskForm):
-    password = PasswordField('New Password', [
-        DataRequired(message="Please enter a new password"), EqualTo('confirmPassword', message='Passwords must match')])
-    confirmPassword  = PasswordField('Confirm Password')
-
-    submit = SubmitField('Submit')

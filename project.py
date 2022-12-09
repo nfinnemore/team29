@@ -12,7 +12,7 @@ from flask import session
 import bcrypt
 from forms import LoginForm
 from models import Comment as Comment
-from forms import RegisterForm, LoginForm, CommentForm, ChangePassword
+from forms import RegisterForm, LoginForm, CommentForm
 
 app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
@@ -225,31 +225,6 @@ def view_account():
     else:
         return redirect(url_for('login'))
 
-@app.route('/changepassword', methods=['GET', 'POST'])
-def changepassword():
-    form = ChangePassword()
-    if session.get('user'):
-        if request.method == 'POST' and form.validate_on_submit():
-            password = bcrypt.hashpw(
-            request.form['password'].encode('utf-8'), bcrypt.gensalt())
-            db.session.add(password)
-            db.session.commit()
-            return redirect(url_for('login'))
-        else:
-            return render_template('changepassword.html', form=form, user=session['user'])
-    else:
-        return render_template('account.html')
-
-@app.route('/delete', methods=['POST'])
-def delete_account(user_id):
-    if session.get('user'):
-        my_user = db.session.query(User).filter_by(id=user_id).one()
-        db.session.delete(my_user)
-        db.session.commit()
-        return render_template('index.html')
-    else:
-        return redirect(url_for('login'))
-
 # New Feature 4: See all the users in a table to get reference on name, contact email
 @app.route('/all_users')
 def all_users():
@@ -261,8 +236,6 @@ def all_users():
         return render_template('all_users.html', users = users, user=session['user'])
     else:
         return redirect(url_for('login'))
-
-
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
