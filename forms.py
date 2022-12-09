@@ -17,6 +17,8 @@ class RegisterForm(FlaskForm):
     email = StringField('Email', [
         Email(message='Not a valid email address.'),
         DataRequired()])
+    
+    phone = StringField('Phone', validators=[Length(10)])
 
     password = PasswordField('Password', [
         DataRequired(message="Please enter a password."),

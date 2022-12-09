@@ -116,6 +116,7 @@ def delete_project(project_id):
     else:
         return redirect(url_for('login'))
 
+# New feature in register: phone is a new field for when registering
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     form = RegisterForm()
@@ -127,8 +128,9 @@ def register():
         # get entered user data
         first_name = request.form['firstname']
         last_name = request.form['lastname']
+        phone = request.form['phone']
         # create user model
-        new_user = User(first_name, last_name, request.form['email'], h_password)
+        new_user = User(first_name, last_name, request.form['email'], phone, h_password)
         # add user to database and commit
         db.session.add(new_user)
         db.session.commit()
@@ -189,7 +191,7 @@ def new_comment(project_id):
     else:
         return redirect(url_for('login'))
 
-# New Feature: all projects
+# New Feature 1: all projects
 # View all projects link
 @app.route('/all_projects')
 def all_projects():
@@ -202,8 +204,8 @@ def all_projects():
     else:
         return redirect(url_for('login'))
 
-# New Feature: view projects
-# View someone else's project link
+# New Feature 2: View other projects
+# View someone's project link
 @app.route('/all_projects/<project_id>')
 def view_project(project_id):
 
@@ -213,13 +215,13 @@ def view_project(project_id):
     else:
         return redirect(url_for('login'))
         
-# New Feature: Manage account (either change password or delete account)
+# New Feature 3: View account details or perform actions (either change password or delete account)
 @app.route('/account')
 def view_account():
 
-    if(session.get('user')):
-        
-        return render_template('account.html')
+    if session.get('user'):
+        user = db.session.query(User).filter_by(id=session['user_id']).one()
+        return render_template('account.html', user=user, user_id=session['user_id'])
     else:
         return redirect(url_for('login'))
 
@@ -248,7 +250,7 @@ def delete_account(user_id):
     else:
         return redirect(url_for('login'))
 
-# New Feature: See all the users in a table to get reference on name, contact email
+# New Feature 4: See all the users in a table to get reference on name, contact email
 @app.route('/all_users')
 def all_users():
     # retreive user from data base
