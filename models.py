@@ -15,6 +15,7 @@ class Project(db.Model):
         self.deadline = deadline
         self.user_id = user_id
 
+# Added phone field
 class User(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
     first_name = db.Column("first_name", db.String(30))

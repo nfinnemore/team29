@@ -5,7 +5,7 @@ from wtforms import ValidationError
 from models import User
 from database import db
 
-
+# added phone field on forms
 class RegisterForm(FlaskForm):
     class Meta:
         csrf = False
